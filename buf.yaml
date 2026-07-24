@@ -1,0 +1,10 @@
+# For details on buf.yaml configuration, visit https://buf.build/docs/configuration/v2/buf-yaml
+version: v2
+lint:
+  use:
+    - STANDARD
+breaking:
+  use:
+    - FILE
+deps: 
+  - buf.build/grpc/grpc:9327911dce6e4b51a37ad5e93578c833

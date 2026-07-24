@@ -1,0 +1,16 @@
+version: v2
+plugins:
+  # - local: protoc-gen-es
+  #   out: ./gen
+  #   opt:
+  #   - target=ts
+  #   - import_extension=ts
+  - local: ./build/protoc-gen-wogo
+    out: ./gen
+    opt:
+    - target=ts
+    - import_extension=ts
+inputs:
+  - module: buf.build/wogo/tardis:main
+  - module: buf.build/wogo/tardis-reporting:main
+clean: true

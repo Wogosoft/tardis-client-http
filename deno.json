@@ -1,0 +1,40 @@
+{
+  "name": "@wogo/tardis-client-http",
+  "license": "GPL-3.0-only",
+  "version": "1.0.0-alpha",
+  "tasks": {
+    "compile": "deno compile --allow-env --allow-read --allow-write --output ./build/protoc-gen-wogo src/plugin/mod.ts",
+    "clean:build": "rm -rf ./build",
+    "clean:gen": "rm -rf ./gen",
+    "clean": "deno run clean:gen && deno run clean:build",
+    "generate": "deno run -A npm:@bufbuild/buf generate",
+    "post": "deno run clean:build",
+    "build": "deno run clean && deno run compile && deno run generate && deno run post",
+    "bundle": "deno run -A ./src/runner.ts"
+  },
+  "imports": {
+    "@bufbuild/buf": "npm:@bufbuild/buf@^1.72.0",
+    "@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.12.1",
+    "@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.12.1",
+    "@bufbuild/protoplugin": "npm:@bufbuild/protoplugin@^2.12.1",
+    "@effect/platform-node": "npm:@effect/platform-node@4.0.0-beta.101",
+    "@gen/": "./gen/",
+    "@std/fs": "jsr:@std/fs@^1.0.24",
+    "@std/path": "jsr:@std/path@^1.1.6",
+    "effect": "npm:effect@4.0.0-beta.100",
+    "@wogo/tardis-integration-prelude": "jsr:@wogo/tardis-integration-prelude@2.3.1"
+  },
+  "exports":{
+    ".": "./gen/mod.ts"
+  },
+  "nodeModulesDir": "auto",
+  "lint": {
+    "rules": {
+      "exclude": [
+        "require-yield",
+        "require-await"
+      ]
+    }
+  },
+  "inclue": ["gen/"]
+}
