@@ -1,5 +1,5 @@
-import { GeneratedFile, getComments, ImportSymbol, safeIdentifier, type Schema } from "@bufbuild/protoplugin";
-import { DescEnum, DescFile, DescMessage, DescService, ScalarType } from "@bufbuild/protobuf";
+import { type GeneratedFile, getComments, type ImportSymbol, safeIdentifier, type Schema } from "@bufbuild/protoplugin";
+import { type DescEnum, type DescFile,type  DescMessage, type DescService, ScalarType } from "@bufbuild/protobuf";
 import { ImportRegistry } from "./import-registry.ts";
 import { EffectPrelude } from "./effect-prelude.ts";
 import { WellKnownTypes } from "./wkt.ts";
@@ -361,6 +361,8 @@ export class WogoGenerator {
     private generateService(f: GeneratedFile, service: DescService){
         const {
             Context,
+            Cause,
+            HttpClient,
             Effect,
             Layer,
             ServiceBuilder,
@@ -390,8 +392,8 @@ export class WogoGenerator {
         f.print("\t\t})")
         f.print("\t}")
         f.print("){")
-        f.print`\tstatic readonly layer = ${Layer}.effect(this, this.make)`
-        f.print`\tstatic readonly serviceId = "${service.typeName}";`
+        f.print`\tstatic readonly layer: ${Layer}.Layer<${serviceId}, ${Cause}.NoSuchElementError, ${HttpClient}.HttpClient| ${ServiceMap}.ServiceMap> = ${Layer}.effect(this, this.make)`
+        f.print`\tstatic readonly serviceId = "${service.typeName}" as const;`
         f.print("}\n")
     }
 

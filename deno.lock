@@ -5,12 +5,12 @@
     "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@^1.1.5": "1.1.6",
     "jsr:@std/path@^1.1.6": "1.1.6",
-    "jsr:@wogo/tardis-integration-prelude@2.3.1": "2.3.1",
+    "jsr:@wogo/tardis-integration-prelude@2.3.2": "2.3.2",
     "npm:@bufbuild/buf@*": "1.72.0",
     "npm:@bufbuild/buf@^1.72.0": "1.72.0",
-    "npm:@bufbuild/protobuf@^2.12.1": "2.12.1",
-    "npm:@bufbuild/protoc-gen-es@^2.12.1": "2.12.1_@bufbuild+protobuf@2.12.1",
-    "npm:@bufbuild/protoplugin@^2.12.1": "2.12.1",
+    "npm:@bufbuild/protobuf@^2.13.0": "2.13.0",
+    "npm:@bufbuild/protoc-gen-es@^2.13.0": "2.13.0_@bufbuild+protobuf@2.13.0",
+    "npm:@bufbuild/protoplugin@^2.13.0": "2.13.0",
     "npm:@effect/platform-node@4.0.0-beta.101": "4.0.0-beta.101_effect@4.0.0-beta.100_ioredis@5.11.1",
     "npm:effect@4.0.0-beta.100": "4.0.0-beta.100",
     "npm:effect@beta": "4.0.0-beta.100"
@@ -32,8 +32,8 @@
         "jsr:@std/internal"
       ]
     },
-    "@wogo/tardis-integration-prelude@2.3.1": {
-      "integrity": "ba8084ebf2fc533d8689ad1b0bcbc35eb53f23c0bf6759e1a977a7e5e53ff6d5",
+    "@wogo/tardis-integration-prelude@2.3.2": {
+      "integrity": "20a7d9c57b63f83434c5bc1a88b7fb2b204494972b96a41aad0cd92dfb9ba094",
       "dependencies": [
         "npm:effect@beta"
       ]
@@ -89,11 +89,11 @@
       "scripts": true,
       "bin": true
     },
-    "@bufbuild/protobuf@2.12.1": {
-      "integrity": "sha512-BvAMfS6LrgZiryOAZ4pBYucu4wG/Ei/9o9DZ9akbREnMLbPJiom2i8b9C8IsKErQoiKqVhrerzt3kOT/RrzLHg=="
+    "@bufbuild/protobuf@2.13.0": {
+      "integrity": "sha512-acq7c49vxfm1ggJ95P70TX7ABDM0vxr1SYD3BB0o0jnBLB4OAqeHyKuN+cD3w80gXEDQ2zxHpR6CUeA+O/aU9g=="
     },
-    "@bufbuild/protoc-gen-es@2.12.1_@bufbuild+protobuf@2.12.1": {
-      "integrity": "sha512-SWa7XvRYRouMo+vBQmpNFZ+ZEqQ8AC0LpL4QWAo1gvstLhFh/Y7Nf/a+MK7ZxDq5LZSThwfk974L1sFxO3OaGw==",
+    "@bufbuild/protoc-gen-es@2.13.0_@bufbuild+protobuf@2.13.0": {
+      "integrity": "sha512-ylI1vrLksdnXrVZRs9xGxmrQxKGhUm6pPszv26kqBvNiO3qPTktk+hgfwbLISBY4M/reShkT2dFLGT9fbydBXg==",
       "dependencies": [
         "@bufbuild/protobuf",
         "@bufbuild/protoplugin"
@@ -103,8 +103,8 @@
       ],
       "bin": true
     },
-    "@bufbuild/protoplugin@2.12.1": {
-      "integrity": "sha512-PY58KxQVAD1BnnKtStOctsMoegEVGfBnY5AOqVQOIu711nA13oYtTqJM8df5lUQg2J1DR3XxUXptE+fWX5oLdA==",
+    "@bufbuild/protoplugin@2.13.0": {
+      "integrity": "sha512-32eMChKaL/A8Hh5AfMmXSdnuyznN85uoEjoyWiWeRrvtQOtpqX/v1R9PDe0g9vMIgzznK9inMT3CUaal0kjLUQ==",
       "dependencies": [
         "@bufbuild/protobuf",
         "@typescript/vfs",
@@ -324,11 +324,11 @@
     "dependencies": [
       "jsr:@std/fs@^1.0.24",
       "jsr:@std/path@^1.1.6",
-      "jsr:@wogo/tardis-integration-prelude@2.3.1",
+      "jsr:@wogo/tardis-integration-prelude@2.3.2",
       "npm:@bufbuild/buf@^1.72.0",
-      "npm:@bufbuild/protobuf@^2.12.1",
-      "npm:@bufbuild/protoc-gen-es@^2.12.1",
-      "npm:@bufbuild/protoplugin@^2.12.1",
+      "npm:@bufbuild/protobuf@^2.13.0",
+      "npm:@bufbuild/protoc-gen-es@^2.13.0",
+      "npm:@bufbuild/protoplugin@^2.13.0",
       "npm:@effect/platform-node@4.0.0-beta.101",
       "npm:effect@4.0.0-beta.100"
     ]

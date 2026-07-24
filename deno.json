@@ -14,18 +14,19 @@
   },
   "imports": {
     "@bufbuild/buf": "npm:@bufbuild/buf@^1.72.0",
-    "@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.12.1",
-    "@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.12.1",
-    "@bufbuild/protoplugin": "npm:@bufbuild/protoplugin@^2.12.1",
+    "@bufbuild/protobuf": "npm:@bufbuild/protobuf@^2.13.0",
+    "@bufbuild/protoc-gen-es": "npm:@bufbuild/protoc-gen-es@^2.13.0",
+    "@bufbuild/protoplugin": "npm:@bufbuild/protoplugin@^2.13.0",
     "@effect/platform-node": "npm:@effect/platform-node@4.0.0-beta.101",
     "@gen/": "./gen/",
     "@std/fs": "jsr:@std/fs@^1.0.24",
     "@std/path": "jsr:@std/path@^1.1.6",
     "effect": "npm:effect@4.0.0-beta.100",
-    "@wogo/tardis-integration-prelude": "jsr:@wogo/tardis-integration-prelude@2.3.1"
+    "@wogo/tardis-integration-prelude": "jsr:@wogo/tardis-integration-prelude@2.3.2"
   },
-  "exports":{
-    ".": "./gen/mod.ts"
+  "exports": "./gen/mod.ts",
+  "publish": {
+    "include": ["./gen"]
   },
   "nodeModulesDir": "auto",
   "lint": {
@@ -35,6 +36,5 @@
         "require-await"
       ]
     }
-  },
-  "inclue": ["gen/"]
+  }
 }
