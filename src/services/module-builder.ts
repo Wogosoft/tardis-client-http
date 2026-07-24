@@ -45,6 +45,12 @@ export class ModuleBuilder {
         this.printLn("}" + postfix + ";\n")
     }
 
+    paren(prefix: string, fn: (builder: ModuleBuilder) => void, postfix = ""){
+        this.printLn(prefix + "(")
+        this.indent(fn)
+        this.printLn(")" + postfix + ";\n")
+    }
+
     build(){
         return [
             this.imports.toString(),

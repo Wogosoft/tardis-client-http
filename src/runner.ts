@@ -54,9 +54,26 @@ const program = Effect.gen(function*(){
             builder.printLn(`${service.name},`)
         }
     })
+
+    builder.scope("export const Tardis = ", builder => {
+        for(const service of registry.services){
+            builder.printLn(`${service.name},`)
+        }
+    })
+
+    const tardisLayer = `Layer.Layer<\n`
+    + [...registry.services].map(s => `\t| ${s.name}\n`).join("")
+    + `, ServiceMap.ServiceError,\n`
+    + `HttpClient.HttpClient | ServiceMap.ServiceMap>`
+    builder.paren(`export const TardisLayer: ${tardisLayer} = Layer.mergeAll`, builder => {
+        for(const service of registry.services){
+            builder.printLn(`${service.name}.layer,`)
+        }
+    })
     
     builder.addTypeOnlyImport("Effect","effect")
-    builder.addTypeOnlyImport("Layer","effect")
+    builder.addTypeOnlyImport("HttpClient","effect/unstable/http")
+    builder.addImport("Layer","effect")
     builder.addTypeOnlyImport("Scope","effect")
     const t = "<E, R>(effect: Effect.Effect<ServiceURLs, E, R>) =>\n\t\tLayer.Layer<ServiceMap.ServiceMap, E, Exclude<R, Scope.Scope>>"
     builder.printLn(`export const makeServiceMapFromEffect:\n\t${t} =\n\tServiceMap.makeServiceMapFactory<ServiceURLs>(ServiceNames);`)

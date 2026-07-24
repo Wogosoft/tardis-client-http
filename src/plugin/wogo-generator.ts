@@ -361,7 +361,6 @@ export class WogoGenerator {
     private generateService(f: GeneratedFile, service: DescService){
         const {
             Context,
-            Cause,
             HttpClient,
             Effect,
             Layer,
@@ -392,7 +391,7 @@ export class WogoGenerator {
         f.print("\t\t})")
         f.print("\t}")
         f.print("){")
-        f.print`\tstatic readonly layer: ${Layer}.Layer<${serviceId}, ${Cause}.NoSuchElementError, ${HttpClient}.HttpClient| ${ServiceMap}.ServiceMap> = ${Layer}.effect(this, this.make)`
+        f.print`\tstatic readonly layer: ${Layer}.Layer<${serviceId}, ${ServiceMap}.ServiceError, ${HttpClient}.HttpClient| ${ServiceMap}.ServiceMap> = ${Layer}.effect(this, this.make)`
         f.print`\tstatic readonly serviceId = "${service.typeName}" as const;`
         f.print("}\n")
     }

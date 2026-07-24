@@ -5,7 +5,7 @@
     "jsr:@std/internal@^1.0.14": "1.0.14",
     "jsr:@std/path@^1.1.5": "1.1.6",
     "jsr:@std/path@^1.1.6": "1.1.6",
-    "jsr:@wogo/tardis-integration-prelude@2.3.2": "2.3.2",
+    "jsr:@wogo/tardis-integration-prelude@2.4.0": "2.4.0",
     "npm:@bufbuild/buf@*": "1.72.0",
     "npm:@bufbuild/buf@^1.72.0": "1.72.0",
     "npm:@bufbuild/protobuf@^2.13.0": "2.13.0",
@@ -32,8 +32,8 @@
         "jsr:@std/internal"
       ]
     },
-    "@wogo/tardis-integration-prelude@2.3.2": {
-      "integrity": "20a7d9c57b63f83434c5bc1a88b7fb2b204494972b96a41aad0cd92dfb9ba094",
+    "@wogo/tardis-integration-prelude@2.4.0": {
+      "integrity": "fb2870a7bc6763a5df90f36cccff28019f2f1d774ac200b15a674964b35f7dfe",
       "dependencies": [
         "npm:effect@beta"
       ]
@@ -324,7 +324,7 @@
     "dependencies": [
       "jsr:@std/fs@^1.0.24",
       "jsr:@std/path@^1.1.6",
-      "jsr:@wogo/tardis-integration-prelude@2.3.2",
+      "jsr:@wogo/tardis-integration-prelude@2.4.0",
       "npm:@bufbuild/buf@^1.72.0",
       "npm:@bufbuild/protobuf@^2.13.0",
       "npm:@bufbuild/protoc-gen-es@^2.13.0",

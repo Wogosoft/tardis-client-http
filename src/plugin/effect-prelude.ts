@@ -15,10 +15,6 @@ export class EffectPrelude {
         return this.fromEffect("Effect")
     }
 
-    get Cause(){
-        return this.fromEffect("Cause", true)
-    }
-
     get Context(){
         return this.fromEffect("Context")
     }
