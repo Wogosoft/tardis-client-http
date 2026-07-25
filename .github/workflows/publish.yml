@@ -24,7 +24,7 @@ jobs:
         run: deno install
 
       - name: Build package
-        run: deno run ci:build
+        run: deno run ci:bundle
 
       - name: Deploy jsr package
         run: deno publish --allow-slow-types
