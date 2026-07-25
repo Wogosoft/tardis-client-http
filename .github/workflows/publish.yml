@@ -4,12 +4,13 @@ on:
     branches:
       - main
 
+permissions:
+  contents: read
+  id-token: write
+
 jobs:
   publish:
     runs-on: ubuntu-latest
-    permissions:
-      contents: read
-      id-token: write
     steps:
       - name: Setup repo
         uses: actions/checkout@v4
@@ -23,7 +24,7 @@ jobs:
         run: deno install
 
       - name: Build package
-        run: deno run bundle
+        run: deno run ci:build
 
       - name: Deploy jsr package
-        run: npx jsr publish --allow-slow-types
+        run: deno publish --allow-slow-types

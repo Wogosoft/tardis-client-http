@@ -7,15 +7,16 @@ Auto generated client that communicates to TARDIS via HTTP
 ```ts
 import { 
     Tardis,
+    RuntimeServiceMap,
     makeServiceMapFromEffect
 } from "@wogo/tardis-client-http";
 import { Effect } from "effect"
 import { FetchHttpClient } from "effect/unstable/http"
 
 // 1. Build the ServiceMap
-const URLLayer = Effect.succeed({
+const URLLayer = Effect.succeed(RuntimeServiceMap.of({
     UserAuthenticatorService: "https://www.google.com"
-}).pipe(makeServiceMapFromEffect)
+})).pipe(makeServiceMapFromEffect)
 
 // 2. Use the Service
 const program = Effect.gen(function*(){
