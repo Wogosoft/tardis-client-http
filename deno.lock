@@ -7,8 +7,7 @@
     "jsr:@std/path@1": "1.1.6",
     "jsr:@std/path@^1.1.5": "1.1.6",
     "jsr:@std/path@^1.1.6": "1.1.6",
-    "jsr:@wogo/tardis-integration-prelude@*": "2.5.1",
-    "jsr:@wogo/tardis-integration-prelude@2.5.1": "2.5.1",
+    "jsr:@wogo/tardis-integration-prelude@2.5.2": "2.5.2",
     "npm:@biomejs/biome@*": "2.5.6",
     "npm:@bufbuild/buf@*": "1.72.0",
     "npm:@bufbuild/buf@^1.72.0": "1.72.0",
@@ -19,7 +18,6 @@
     "npm:@typescript/typescript6@*": "6.0.2",
     "npm:@typescript/typescript6@latest": "6.0.2",
     "npm:effect@4.0.0-beta.100": "4.0.0-beta.100",
-    "npm:effect@beta": "4.0.0-beta.100",
     "npm:typescript@5": "5.4.5",
     "npm:typescript@7.0.2": "7.0.2",
     "npm:typescript@^7.0.2": "7.0.2"
@@ -41,10 +39,10 @@
         "jsr:@std/internal"
       ]
     },
-    "@wogo/tardis-integration-prelude@2.5.1": {
-      "integrity": "e639c8dcd047f2ddfd112b6b979f70ec3776c6531c88b12f0a7ca40f780ae046",
+    "@wogo/tardis-integration-prelude@2.5.2": {
+      "integrity": "963bcc7c4e1ce8c2359d303247b2adff4ab4edd03ac3b96bd291d9778fcc51ea",
       "dependencies": [
-        "npm:effect@beta"
+        "npm:effect"
       ]
     }
   },
@@ -524,7 +522,7 @@
     "dependencies": [
       "jsr:@std/fs@^1.0.24",
       "jsr:@std/path@^1.1.6",
-      "jsr:@wogo/tardis-integration-prelude@2.5.1",
+      "jsr:@wogo/tardis-integration-prelude@2.5.2",
       "npm:@bufbuild/buf@^1.72.0",
       "npm:@bufbuild/protobuf@^2.13.0",
       "npm:@bufbuild/protoc-gen-es@^2.13.0",
