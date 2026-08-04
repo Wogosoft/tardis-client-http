@@ -1,5 +1,8 @@
 # @wogo/tardis-client-http
 
+[![JSR](https://jsr.io/badges/@wogo/tardis-client-http)](https://jsr.io/@wogo/tardis-client-http)
+[![JSR](https://jsr.io/badges/@wogo/tardis-client-http/score)](https://jsr.io/@wogo/tardis-client-http)
+
 Auto generated client that communicates to TARDIS via HTTP
 
 ## Usage
