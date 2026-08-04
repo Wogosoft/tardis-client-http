@@ -28,7 +28,7 @@ export class EffectPrelude {
     }
 
     get Schema(){
-        return this.fromPrelude("Schema")
+        return this.fromEffect("Schema")
     }
 
     get ServiceMap(){

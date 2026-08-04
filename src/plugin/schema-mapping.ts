@@ -1,5 +1,5 @@
 import { Data } from "effect"
-import { ImportSymbol } from "@bufbuild/protoplugin";
+import type { ImportSymbol } from "@bufbuild/protoplugin";
 
 export type SchemaMapping = Data.TaggedEnum<{
     Ref: { 

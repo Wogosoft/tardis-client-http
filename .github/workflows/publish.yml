@@ -26,5 +26,11 @@ jobs:
       - name: Build package
         run: deno run ci:bundle
 
+      - name: Add explicit types
+        run: deno run fix-slow-types
+
+      - name: Format code
+        run: deno run format
+
       - name: Deploy jsr package
-        run: deno publish --allow-slow-types
+        run: deno publish

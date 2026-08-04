@@ -6,6 +6,28 @@ import { WellKnownTypes } from "./wkt.ts";
 import { ServiceRegistry } from "./service-registry.ts";
 import { SchemaMapping } from "./schema-mapping.ts";
 
+const defaulting = "withDecodingDefaultTypeKey"
+
+const defaultVal = (id: string) => {
+    switch(id){
+        case "String":
+            return '""';
+        case "Number":
+            return "0";
+        case "Boolean":
+            return "false";
+        case "BigInt":
+            return "0n";
+        case "Uint8Array":
+            return "new globalThis.Uint8Array(0)"
+        default:
+            if( id.includes("Record") ){
+                return "{}"
+            }
+            return "undefined";
+    }
+}
+
 const mapScalarField = (scalar: ScalarType) => {
   switch(scalar){
     case ScalarType.DOUBLE:
@@ -34,6 +56,7 @@ const mapScalarField = (scalar: ScalarType) => {
 const fieldPrinterFactory = (
     f: GeneratedFile,
     Schema: ImportSymbol,
+    Effect: ImportSymbol,
     defaultIndent = ""
 ) => (name: string, optional: boolean) => (
     fieldData: {
@@ -45,20 +68,16 @@ const fieldPrinterFactory = (
     const { schema, suspend, indent=defaultIndent } = fieldData;
     if( typeof schema === "string" ){
         if( optional && suspend){
-            f.print`${indent}${name}: ${Schema}.optional(${Schema}.suspend(() => ${Schema}.${schema})),`
+            f.print`${indent}${name}: ${Schema}.optional(${Schema}.suspend(() => ${Schema}.${schema})).pipe(${Schema}.${defaulting}(${Effect}.succeed(${defaultVal(schema)}))),`
         } else if( optional && !suspend ){
-            f.print`${indent}${name}: ${Schema}.optional(${Schema}.${schema}),`
+            f.print`${indent}${name}: ${Schema}.optional(${Schema}.${schema}).pipe(${Schema}.${defaulting}(${Effect}.succeed(${defaultVal(schema)}))),`
         } else if( !optional && suspend ){
-            f.print`${indent}${name}: ${Schema}.suspend(() => ${Schema}.${schema}),`
+            f.print`${indent}${name}: ${Schema}.suspend(() => ${Schema}.${schema}).pipe(${Schema}.${defaulting}(${Effect}.succeed(${defaultVal(schema)}))),`
         } else {
-            f.print`${indent}${name}: ${Schema}.${schema},`
+            f.print`${indent}${name}: ${Schema}.${schema}.pipe(${Schema}.${defaulting}(${Effect}.succeed(${defaultVal(schema)}))),`
         }
     } else if( schema._tag === "Imported" ) {
-        if( optional ){
-            f.print`${indent}${name}: ${Schema}.optional(${schema.schema}),`;
-        } else {
-            f.print`${indent}${name}: ${schema.schema},`;
-        }
+        f.print`${indent}${name}: ${Schema}.optional(${schema.schema}),`;
     } else if( schema._tag === "Composite"){
         const outer = schema.outer;
         if( schema.params.length === 1 ){
@@ -79,9 +98,9 @@ const fieldPrinterFactory = (
                 } else if( optional && !suspend ){
                     f.print`${indent}${name}: ${Schema}.optional(${Schema}.${outer}(${inner.schema})),`
                 } else if( !optional && suspend ){
-                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.suspend(() => ${inner.schema})),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.suspend(() => ${inner.schema})).pipe(${Schema}.${defaulting}(${Effect}.succeed([]))),`
                 } else {
-                    f.print`${indent}${name}: ${Schema}.${outer}(${inner.schema}),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${inner.schema}).pipe(${Schema}.${defaulting}(${Effect}.succeed([]))),`
                 }
             }
         } else {
@@ -92,9 +111,9 @@ const fieldPrinterFactory = (
                 } else if( optional && !suspend ){
                     f.print`${indent}${name}: ${Schema}.optional(${Schema}.${outer}(${Schema}.${left},${Schema}.${right})),`
                 } else if( !optional && suspend ){
-                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.suspend(() => ${Schema}.${right})),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.suspend(() => ${Schema}.${right})).pipe(${Schema}.${defaulting}(${Effect}.succeed({}))),`
                 } else {
-                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.${right}),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.${right}).pipe(${Schema}.${defaulting}(${Effect}.succeed({}))),`
                 }
             } else {
                 if( optional && suspend){
@@ -102,9 +121,9 @@ const fieldPrinterFactory = (
                 } else if( optional && !suspend ){
                     f.print`${indent}${name}: ${Schema}.optional(${Schema}.${outer}(${Schema}.${left}, ${right.schema})),`
                 } else if( !optional && suspend ){
-                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.suspend(() => ${right.schema})),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left},${Schema}.suspend(() => ${right.schema})).pipe(${Schema}.${defaulting}(${Effect}.succeed({}))),`
                 } else {
-                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left}, ${right.schema}),`
+                    f.print`${indent}${name}: ${Schema}.${outer}(${Schema}.${left}, ${right.schema}).pipe(${Schema}.${defaulting}(${Effect}.succeed({}))),`
                 }
             }
         }
@@ -116,7 +135,7 @@ const fieldPrinterFactory = (
         } else if( !optional && suspend ){
             f.print`${indent}${name}: ${Schema}.suspend(() => ${schema.schema}),`
         } else {
-            f.print`${indent}${name}: ${schema.schema},`
+            f.print`${indent}${name}: ${Schema}.optional(${schema.schema}),`
         }
     }
 }
@@ -148,10 +167,10 @@ export class WogoGenerator {
     }
 
     private generateMessage(f: GeneratedFile, file: DescFile, message: DescMessage){
-        const { Schema } = new EffectPrelude(f);
+        const { Schema, Effect } = new EffectPrelude(f);
         f.print(f.jsDoc(message));
         f.print(f.export("const", message.name), " = ", Schema, ".Struct({")
-        const makeFieldPrinter = fieldPrinterFactory(f, Schema, "\t");
+        const makeFieldPrinter = fieldPrinterFactory(f, Schema, Effect, "\t");
         for (const field of message.fields){
             f.print(f.jsDoc(field, "\t"));
             const comments = getComments(field);
@@ -367,33 +386,50 @@ export class WogoGenerator {
             ServiceBuilder,
             ServiceMap
         } = new EffectPrelude(f)
-        const serviceId = safeIdentifier(service.name);
-        f.print(f.jsDoc(service));
-        f.print`${f.export("class", serviceId)} extends ${Context}.Service<${serviceId}>()(`
-        f.print(`\t"@wogo/tardis/${serviceId}",`)
-        f.print("\t{")
-        f.print`\t\tmake: ${Effect}.gen(function*(){`
-        f.print`\t\t\tconst serviceName = "${service.typeName}";`
-        f.print`\t\t\tconst baseUrl = yield* ${ServiceMap}.getURL(serviceName);`
-        f.print`\t\t\tconst builder = yield* ${ServiceBuilder}.make(baseUrl, serviceName);`
-        f.print`\t\t\treturn {`
+        const serviceName = safeIdentifier(service.name);
+        const serviceSuper = `${service.name}Super`;
+        const interfaceName = `${service.name}Interface`
+        const uniqueWogoId = `@wogo/tardis/${service.name}`
+        f.print(f.export(`interface`, service.name + "Interface"), "{")
         for(const method of service.methods){
             const inputImport = this.importRegistry.import(f, method.input);
             const outputImport = this.importRegistry.import(f, method.output);
-            f.print(f.jsDoc(method, "\t\t\t\t"));
-            f.print`\t\t\t\t${method.localName}: builder.makeOperation({`
-            f.print`\t\t\t\t\toperationId: "${method.name}",`
-            f.print`\t\t\t\t\tinputSchema: ${inputImport},`
-            f.print`\t\t\t\t\toutputSchema: ${outputImport},`
-            f.print`\t\t\t\t}),`
+            f.print(f.jsDoc(method, "\t"));
+            f.print`\t${method.localName}: ${ServiceBuilder}.Operation<`
+            f.print`\t\ttypeof ${inputImport},`
+            f.print`\t\ttypeof ${outputImport}`
+            f.print`\t>;`
         }
-        f.print`\t\t\t}`
-        f.print("\t\t})")
-        f.print("\t}")
-        f.print("){")
-        f.print`\tstatic readonly layer: ${Layer}.Layer<${serviceId}, ${ServiceMap}.ServiceError, ${HttpClient}.HttpClient| ${ServiceMap}.ServiceMap> = ${Layer}.effect(this, this.make)`
-        f.print`\tstatic readonly serviceId = "${service.typeName}" as const;`
         f.print("}\n")
+        f.print`const ${serviceSuper}: ${Context}.ServiceClass<`
+        f.print`\t${serviceName},`
+        f.print`\t"${uniqueWogoId}",`
+        f.print`\t${interfaceName}`
+        f.print`> = ${Context}.Service<${serviceName}, ${interfaceName}>()("${uniqueWogoId}");\n`
+        f.print(f.jsDoc(service));
+        f.print`${f.export("class", serviceName)} extends ${serviceSuper} {`
+        f.print`\tstatic readonly serviceId = "${service.typeName}" as const;`
+        f.print`\tstatic readonly layer: ${Layer}.Layer<`
+        f.print`\t\t${serviceName}, `
+        f.print`\t\t${ServiceMap}.ServiceError, `
+        f.print`\t\t${HttpClient}.HttpClient | ${ServiceMap}.ServiceMap`
+        f.print`\t> = ${Layer}.effect(${serviceName}, ${Effect}.gen(function*(){`
+        f.print`\t\tconst serviceId = "${service.typeName}" as const;`
+        f.print`\t\tconst baseUrl = yield* ${ServiceMap}.getURL(serviceId);`
+        f.print`\t\tconst builder = yield* ${ServiceBuilder}.make(baseUrl, serviceId);`
+        f.print`\n\t\treturn {`
+        for(const method of service.methods){
+            const inputImport = this.importRegistry.import(f, method.input);
+            const outputImport = this.importRegistry.import(f, method.output);
+            f.print`\t\t\t${method.localName}: builder.makeOperation({`
+            f.print`\t\t\t\toperationId: "${method.name}",`
+            f.print`\t\t\t\tinputSchema: ${inputImport},`
+            f.print`\t\t\t\toutputSchema: ${outputImport},`
+            f.print`\t\t\t}),`
+        }
+        f.print`\t\t}`
+        f.print`\t}))`
+        f.print`}`
     }
 
     generateFiles(){
