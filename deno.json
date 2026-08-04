@@ -1,7 +1,7 @@
 {
   "name": "@wogo/tardis-client-http",
   "license": "AGPL-3.0-or-later",
-  "version": "2.5.2",
+  "version": "2.5.3",
   "tasks": {
     "compile": "deno compile --allow-env --allow-read --allow-write --output ./build/protoc-gen-wogo src/plugin/mod.ts",
     "ci:build": "deno run compile && deno run generate",
